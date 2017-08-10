@@ -8,7 +8,7 @@ addpath(genpath('functions'));
 
 global SITEN
 
-runMode = 'test'; % 'test' OR 'full'
+runMode = 'acrossExperimentsLocal'; % 'test' OR 'full'
 
 %% IMPORT DATA
 
@@ -24,9 +24,9 @@ elseif strcmp(runMode,'full')
 	cond = createConditionStruct(exp);
 	cond = findImagePaths(exp,cond);
 	
-elseif strcmp(runMode,'acrossExperiments')
+elseif strcmp(runMode,'acrossExperimentsQuench')
 	SITEN = 9;
-	inputDataExp
+	inputDataExpQuench
 	cond1 = createConditionStruct(exp1);
 	cond1 = findImagePaths(exp1,cond1);
 	cond2 = createConditionStruct(exp2);
@@ -35,10 +35,27 @@ elseif strcmp(runMode,'acrossExperiments')
 	cond3 = findImagePaths(exp3,cond3);
 	cond4 = createConditionStruct(exp4);
 	cond4 = findImagePaths(exp4,cond4);
+	
+	elseif strcmp(runMode,'acrossExperimentsLocal')
+	SITEN = 9;
+	inputDataExpLocal
+	cond1 = createConditionStruct(exp1);
+	cond1 = findImagePaths(exp1,cond1);
+	cond2 = createConditionStruct(exp2);
+	cond2 = findImagePaths(exp2,cond2);
+	cond3 = createConditionStruct(exp3);
+	cond3 = findImagePaths(exp3,cond3);
+	cond4 = createConditionStruct(exp4);
+	cond4 = findImagePaths(exp4,cond4);
+	cond5 = createConditionStruct(exp5);
+	cond5 = findImagePaths(exp5,cond5);
 end
 
-conditionN = length(cond);
-cond(2).mutation{1} = 'F508del/R1070W';
+cond1(2).mutation{1} = 'F508del/R1070W';
+cond2(2).mutation{1} = 'F508del/R1070W';
+cond3(2).mutation{1} = 'F508del/R1070W';
+cond4(2).mutation{1} = 'F508del/R1070W';
+cond5(2).mutation{1} = 'F508del/R1070W';
 
 disp('Completed importing data')
 
@@ -49,7 +66,7 @@ global BINNING EXTRA
 BINNING = 1 / 1;
 EXTRA = ceil(BINNING*20);
 
-conditionN = length(cond);
+conditionN = 3;
 
 
 %% SEGMENTATION
