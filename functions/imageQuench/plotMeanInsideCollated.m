@@ -7,12 +7,13 @@ meanYel = horzcat(conditionStruct.imageQuench.yelInsideOverT);
 
 x=1:70;
 
-% FIX ME
-meanYelTest = mean(meanYel(:,1:3),2);
-meanYelControl = mean(meanYel(:,4:6),2);
 
-errYelTest = std(meanYel(:,1:3),0,2);
-errYelControl = std(meanYel(:,4:6),0,2);
+% FIX ME
+meanYelTest = mean(meanYel(:,1:4),2);
+meanYelControl = mean(meanYel(:,5:8),2);
+
+errYelTest = std(meanYel(:,1:4),0,2);
+errYelControl = std(meanYel(:,5:8),0,2);
 % FIX ME
 
 
