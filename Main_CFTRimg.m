@@ -6,13 +6,6 @@ imtool close all
 % add the functions to the path
 addpath(genpath('functions'));
 
-% mapLen = 256;
-% mapVec = linspace(0,1,mapLen)';
-% mapZeros = zeros(mapLen,1);
-% redMap = [mapVec, mapZeros, mapZeros];
-% yelMap = [mapVec, mapVec, mapZeros];
-% colormap(redMap)
-
 global SITEN
 
 runMode = 'test'; % 'test' OR 'full'
@@ -30,6 +23,18 @@ elseif strcmp(runMode,'full')
 	inputData
 	cond = createConditionStruct(exp);
 	cond = findImagePaths(exp,cond);
+	
+elseif strcmp(runMode,'acrossExperiments')
+	SITEN = 9;
+	inputDataExp
+	cond1 = createConditionStruct(exp1);
+	cond1 = findImagePaths(exp1,cond1);
+	cond2 = createConditionStruct(exp2);
+	cond2 = findImagePaths(exp2,cond2);
+	cond3 = createConditionStruct(exp3);
+	cond3 = findImagePaths(exp3,cond3);
+	cond4 = createConditionStruct(exp4);
+	cond4 = findImagePaths(exp4,cond4);
 end
 
 conditionN = length(cond);
@@ -43,6 +48,8 @@ global BINNING EXTRA
 
 BINNING = 1 / 1;
 EXTRA = ceil(BINNING*20);
+
+conditionN = length(cond);
 
 
 %% SEGMENTATION
@@ -192,19 +199,19 @@ end
 
 for j=1:conditionN
 	
-	quenchImageN = cond(j).quenchImageTestN + cond(j).quenchImageControlN;
+	quenchImageN = cond4(j).quenchImageTestN + cond4(j).quenchImageControlN;
 	
 	for i=1:quenchImageN
 		
-% 		cond(j).imageQuench(i) = findYelBackground(cond(j).imageQuench(i));
+% 		cond4(j).imageQuench(i) = findYelBackground(cond4(j).imageQuench(i));
 		
-% 		cond(j).imageQuench(i) = findRedExpression(cond(j).imageQuench(i));
+% 		cond4(j).imageQuench(i) = findRedExpression(cond4(j).imageQuench(i));
 		
-		cond(j).imageQuench(i) = findRedMaskChange(cond(j).imageQuench(i));
+		cond4(j).imageQuench(i) = findRedMaskChange(cond4(j).imageQuench(i));
 		
-		cond(j).imageQuench(i) = findYelInsideOverTime(cond(j).imageQuench(i));
+		cond4(j).imageQuench(i) = findYelInsideOverTime(cond4(j).imageQuench(i));
 		
-		cond(j).imageQuench(i) = calculateConcIodine(cond(j).imageQuench(i));
+		cond4(j).imageQuench(i) = calculateConcIodine(cond4(j).imageQuench(i));
 		
 	end
 end
@@ -235,11 +242,11 @@ disp([min(ymin), max(ymax)])
 
 figure
 subplot(1,3,1)
-plotMeanInsideCollated(cond(1))
+plotMeanInsideCollated(cond(1),'r')
 subplot(1,3,2)
-plotMeanInsideCollated(cond(2))
+plotMeanInsideCollated(cond(2),'b')
 subplot(1,3,3)
-plotMeanInsideCollated(cond(3))
+plotMeanInsideCollated(cond(3),'g')
 
 
 
