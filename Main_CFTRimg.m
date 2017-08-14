@@ -59,12 +59,6 @@ end
 
 conditionN = 3;
 
-cond1(2).mutation{1} = 'F508del/R1070W';
-cond2(2).mutation{1} = 'F508del/R1070W';
-cond3(2).mutation{1} = 'F508del/R1070W';
-cond4(2).mutation{1} = 'F508del/R1070W';
-cond5(2).mutation{1} = 'F508del/R1070W';
-
 disp('Completed importing data')
 time(1) = toc;
 
@@ -73,34 +67,74 @@ time(1) = toc;
 close all
 
 for j=1:conditionN
- 	for i=1:cond(j).localImageN
-
-		cond(j).imageLocal(i) = imgSegmentWatershed(cond(j).imageLocal(i));
-
+ 	for i=1:cond1(j).localImageN
+		cond1(j).imageLocal(i) = imgSegmentWatershed(cond1(j).imageLocal(i));
+	end
+	for i=1:cond2(j).localImageN
+		cond2(j).imageLocal(i) = imgSegmentWatershed(cond2(j).imageLocal(i));
+	end
+	for i=1:cond3(j).localImageN
+		cond3(j).imageLocal(i) = imgSegmentWatershed(cond3(j).imageLocal(i));
+	end
+	for i=1:cond4(j).localImageN
+		cond4(j).imageLocal(i) = imgSegmentWatershed(cond4(j).imageLocal(i));
+	end
+	for i=1:cond5(j).localImageN
+		cond5(j).imageLocal(i) = imgSegmentWatershed(cond5(j).imageLocal(i));
 	end
 end
 
-store = cond;
+store1 = cond1;
+store2 = cond2;
+store3 = cond3;
+store4 = cond4;
+store5 = cond5;
 
 disp('Completed image segmentation')
 time(2) = toc;
 %% FILTERING
 
-cond = store;
+cond1 = store1;
+cond2 = store2;
+cond3 = store3;
+cond4 = store4;
+cond5 = store5;
 
 for j=1:conditionN
-	for i=1:cond(j).localImageN
-		
-		cond(j).imageLocal(i).cellN = cond(j).imageLocal(i).cellN(1);
-		
-		cond(j).imageLocal(i) = imgFilterEdges(cond(j).imageLocal(i));
-		
-		cond(j).imageLocal(i) = imgFilterUnmasked(cond(j).imageLocal(i));
-		
-		cond(j).imageLocal(i) = imgFilterCellDimensions(cond(j).imageLocal(i));
-		
-		cond(j).imageLocal(i) = imgFilterRedGrad(cond(j).imageLocal(i));
-		
+	for i=1:cond1(j).localImageN
+		cond1(j).imageLocal(i).cellN = cond1(j).imageLocal(i).cellN(1);
+		cond1(j).imageLocal(i) = imgFilterEdges(cond1(j).imageLocal(i));
+		cond1(j).imageLocal(i) = imgFilterUnmasked(cond1(j).imageLocal(i));
+		cond1(j).imageLocal(i) = imgFilterCellDimensions(cond1(j).imageLocal(i));
+		cond1(j).imageLocal(i) = imgFilterRedGrad(cond1(j).imageLocal(i));
+	end
+	for i=1:cond2(j).localImageN
+		cond2(j).imageLocal(i).cellN = cond2(j).imageLocal(i).cellN(1);
+		cond2(j).imageLocal(i) = imgFilterEdges(cond2(j).imageLocal(i));
+		cond2(j).imageLocal(i) = imgFilterUnmasked(cond2(j).imageLocal(i));
+		cond2(j).imageLocal(i) = imgFilterCellDimensions(cond2(j).imageLocal(i));
+		cond2(j).imageLocal(i) = imgFilterRedGrad(cond2(j).imageLocal(i));
+	end
+	for i=1:cond3(j).localImageN
+		cond3(j).imageLocal(i).cellN = cond3(j).imageLocal(i).cellN(1);
+		cond3(j).imageLocal(i) = imgFilterEdges(cond3(j).imageLocal(i));
+		cond3(j).imageLocal(i) = imgFilterUnmasked(cond3(j).imageLocal(i));
+		cond3(j).imageLocal(i) = imgFilterCellDimensions(cond3(j).imageLocal(i));
+		cond3(j).imageLocal(i) = imgFilterRedGrad(cond3(j).imageLocal(i));
+	end
+	for i=1:cond4(j).localImageN
+		cond4(j).imageLocal(i).cellN = cond4(j).imageLocal(i).cellN(1);
+		cond4(j).imageLocal(i) = imgFilterEdges(cond4(j).imageLocal(i));
+		cond4(j).imageLocal(i) = imgFilterUnmasked(cond4(j).imageLocal(i));
+		cond4(j).imageLocal(i) = imgFilterCellDimensions(cond4(j).imageLocal(i));
+		cond4(j).imageLocal(i) = imgFilterRedGrad(cond4(j).imageLocal(i));
+	end
+	for i=1:cond5(j).localImageN
+		cond5(j).imageLocal(i).cellN = cond5(j).imageLocal(i).cellN(1);
+		cond5(j).imageLocal(i) = imgFilterEdges(cond5(j).imageLocal(i));
+		cond5(j).imageLocal(i) = imgFilterUnmasked(cond5(j).imageLocal(i));
+		cond5(j).imageLocal(i) = imgFilterCellDimensions(cond5(j).imageLocal(i));
+		cond5(j).imageLocal(i) = imgFilterRedGrad(cond5(j).imageLocal(i));
 	end
 end
 
@@ -109,36 +143,49 @@ time(3) = toc;
 %% DISTANCE MAP
 
 for j=1:conditionN
-	for i=1:cond(j).localImageN
-		
-		cond(j).imageLocal(i) = imgFindBackground(cond(j).imageLocal(i));
-		
-		cond(j).imageLocal(i) = distanceMap(cond(j).imageLocal(i));
-
+	for i=1:cond1(j).localImageN
+		cond1(j).imageLocal(i) = imgFindBackground(cond1(j).imageLocal(i));
+		cond1(j).imageLocal(i) = distanceMap(cond1(j).imageLocal(i));
+	end
+	for i=1:cond2(j).localImageN
+		cond2(j).imageLocal(i) = imgFindBackground(cond2(j).imageLocal(i));
+		cond2(j).imageLocal(i) = distanceMap(cond2(j).imageLocal(i));
+	end
+	for i=1:cond3(j).localImageN
+		cond3(j).imageLocal(i) = imgFindBackground(cond3(j).imageLocal(i));
+		cond3(j).imageLocal(i) = distanceMap(cond3(j).imageLocal(i));
+	end
+	for i=1:cond4(j).localImageN
+		cond4(j).imageLocal(i) = imgFindBackground(cond4(j).imageLocal(i));
+		cond4(j).imageLocal(i) = distanceMap(cond4(j).imageLocal(i));
+	end
+	for i=1:cond5(j).localImageN
+		cond5(j).imageLocal(i) = imgFindBackground(cond5(j).imageLocal(i));
+		cond5(j).imageLocal(i) = distanceMap(cond5(j).imageLocal(i));
 	end
 end
 
 disp('Completed localisation distance map')
 time(4) = toc;
 %% QUENCHING ANALYSIS
-
-for j=1:conditionN
-	
-	quenchImageN = cond4(j).quenchImageTestN + cond4(j).quenchImageControlN;
-	
-	for i=1:quenchImageN
-		
-		cond(j).imageQuench(i) = findRedMaskChange(cond(j).imageQuench(i));
-		
-		cond4(j).imageQuench(i) = findYelInsideOverTime(cond4(j).imageQuench(i));
-		
-		cond4(j).imageQuench(i) = calculateConcIodine(cond4(j).imageQuench(i));
-		
-	end
-end
-
-disp('Completed quenching analysis')
-time(5) = toc;
+% 
+% for j=1:conditionN
+% 	
+% 	quenchImageN = cond(j).quenchImageTestN + cond(j).quenchImageControlN;
+% 	
+% 	for i=1:quenchImageN
+% 		
+% 		cond(j).imageQuench(i) = findRedMaskChange(cond(j).imageQuench(i));
+% 		
+% 		cond(j).imageQuench(i) = findYelInsideOverTime(cond(j).imageQuench(i));
+% 		
+% 		cond(j).imageQuench(i) = calculateConcIodine(cond(j).imageQuench(i));
+% 		
+% 	end
+% end
+% 
+% disp('Completed quenching analysis')
+% time(5) = toc;
 %%
 
 disp('Full analysis completed')

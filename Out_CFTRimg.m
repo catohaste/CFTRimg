@@ -9,27 +9,27 @@ stdYFPMembrane = zeros(1,conditionN);
 
 for i=1:conditionN
 	
-	fullCellN = vertcat(cond(i).imageLocal.cellN);
-	cond(i).localCellN = sum(fullCellN(:,end));
+	fullCellN = vertcat(cond5(i).imageLocal.cellN);
+	cond5(i).localCellN = sum(fullCellN(:,end));
 	
-	yelMembrane	= vertcat(cond(i).imageLocal.yelMembrane);
-	yelEntire		= vertcat(cond(i).imageLocal.yelEntire);
-	redEntire		= vertcat(cond(i).imageLocal.redEntire);
+	yelMembrane	= vertcat(cond5(i).imageLocal.yelMembrane);
+	yelEntire		= vertcat(cond5(i).imageLocal.yelEntire);
+	redEntire		= vertcat(cond5(i).imageLocal.redEntire);
 	
 	meanYFPEntire(i)		= mean(yelEntire ./ redEntire);
 	stdYFPEntire(i)			= std(yelEntire ./ redEntire);
 	meanYFPMembrane(i)	= mean(yelMembrane ./ redEntire);
 	stdYFPMembrane(i)		= std(yelMembrane ./ redEntire);
 	
-	cond(i) = collectRatioData(cond(i));
+	cond5(i) = collectRatioData(cond5(i));
 
 end
 
-disp([cond.mutation])
-disp(([cond.localHits]./[cond.localCellN])*100)
+disp([cond5.mutation])
+disp(([cond5.localHits]./[cond5.localCellN])*100)
 disp([meanYFPEntire; stdYFPEntire])
 disp([meanYFPMembrane; stdYFPMembrane])
-disp([cond.localCellN])
+disp([cond5.localCellN])
 
 
 %% CORRELATION PLOTS
