@@ -1,12 +1,31 @@
 
+global BINNING
+
+%% BOXPLOTS
+
+image = zeros(2160*BINNING, 2160*BINNING, 5);
+imageData = zeros(2160^2 * BINNING^2,5);
+
+for i = 1:5
+	image(:,:,i) = im2double(imread(cond(1).imageLocal(10+i).redPath));
+	tmp = image(:,:,i);
+ 	imageData(:,i) = tmp(:);
+end
+
+boxplot(imageData)
 
 %% LOCALISATION OUTPUT
+
+cellN = sum(vertcat(cond.localCellN));
 
 meanYFPEntire		= zeros(1,conditionN);
 meanYFPMembrane = zeros(1,conditionN);
 stdYFPEntire		= zeros(1,conditionN);
 stdYFPMembrane = zeros(1,conditionN);
 
+data = zeros(cellN,1);
+
+cellCount = 1;
 for i=1:conditionN
 	
 	fullCellN = vertcat(cond5(i).imageLocal.cellN);
@@ -21,7 +40,12 @@ for i=1:conditionN
 	meanYFPMembrane(i)	= mean(yelMembrane ./ redEntire);
 	stdYFPMembrane(i)		= std(yelMembrane ./ redEntire);
 	
-	cond5(i) = collectRatioData(cond5(i));
+
+	data(cellCount:(cellCount+cond5(i).localCellN-1)) = ...
+		yelMembrane ./ redEntire;
+	cellCount = cellCount + cond5(i).localCellN;
+	
+	cond5(i) = collectRatioData(cond(i));
 
 end
 
@@ -31,6 +55,24 @@ disp([meanYFPEntire; stdYFPEntire])
 disp([meanYFPMembrane; stdYFPMembrane])
 disp([cond5.localCellN])
 
+%% STATISTICS
+
+cellN = sum(vertcat(cond.localCellN));
+
+group = cell(cellN,1);
+
+cellCount = 1;
+for i=1:conditionN
+	
+	group(cellCount:(cellCount+cond(i).localCellN-1)) = cond(i).mutation;
+	
+	cellCount = cellCount + cond(i).localCellN;
+	
+end
+
+[p,tbl,stats]=kruskalwallis(data,group,'off');
+
+[c,m,h] = multcompare(stats,'CType','dunn-sidak');
 
 %% CORRELATION PLOTS
 
@@ -39,10 +81,10 @@ close all
 for i=1:length(cond)
 	figure
 	plotLocalRedYelCorr(cond(i),'entire')
-	figure
-	plotLocalRedYelCorr(cond(i),'membrane')
-	figure
-	plotLocalRedYelCorr(cond(i),'interior')
+% 	figure
+% 	plotLocalRedYelCorr(cond(i),'membrane')
+% 	figure
+% 	plotLocalRedYelCorr(cond(i),'interior')
 end
 
 % 	figure
@@ -59,8 +101,8 @@ end
 
 close all
 
-x=1;
-y=7;
+x=3;
+y=6;
 
 cond(x).imageLocal(y).cellN
 

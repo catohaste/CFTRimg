@@ -13,14 +13,24 @@ global SITEN BINNING EXTRA
 BINNING = 1 / 1;
 EXTRA = ceil(BINNING*20);
 
+
 runMode = 'acrossExperimentsLocal'; % 'test' OR 'full'
 
 
 %% IMPORT DATA
 
 if strcmp(runMode,'test')
-	SITEN = 2;
-	inputDataTest
+	experimentStr = {'exp1'};
+	exp = createExperimentStruct(experimentStr);
+
+	exp(1).local_quench = {'60x'};
+	exp(1).conditionStr = {'F508del/T1064W','F508del/T1064H','F508del/T1064M',};
+	
+	exp(1).condWells(1,:) = {'B02'};
+	exp(1).condWells(2,:) = {'B03'};
+	exp(1).condWells(3,:) = {'B04'};
+
+	
 	cond = createConditionStruct(exp);
 	cond = findImagePaths(exp,cond);
 		
@@ -29,6 +39,7 @@ elseif strcmp(runMode,'full')
 	inputData
 	cond = createConditionStruct(exp);
 	cond = findImagePaths(exp,cond);
+
 	
 elseif strcmp(runMode,'acrossExperimentsQuench')
 	SITEN = 9;
@@ -42,7 +53,7 @@ elseif strcmp(runMode,'acrossExperimentsQuench')
 	cond4 = createConditionStruct(exp4);
 	cond4 = findImagePaths(exp4,cond4);
 	
-	elseif strcmp(runMode,'acrossExperimentsLocal')
+elseif strcmp(runMode,'acrossExperimentsLocal')
 	SITEN = 9;
 	inputDataExpLocal
 	cond1 = createConditionStruct(exp1);
@@ -55,6 +66,12 @@ elseif strcmp(runMode,'acrossExperimentsQuench')
 	cond4 = findImagePaths(exp4,cond4);
 	cond5 = createConditionStruct(exp5);
 	cond5 = findImagePaths(exp5,cond5);
+
+elseif strcmp(runMode,'Stella')
+	SITEN = 9;
+	inputDataStellaICL4
+	cond = createConditionStruct(exp);
+	cond = findImagePaths(exp,cond);
 end
 
 conditionN = 3;
