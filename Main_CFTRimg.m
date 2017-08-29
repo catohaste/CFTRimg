@@ -8,6 +8,7 @@ imtool close all
 
 % add the functions to the path
 addpath(genpath('functions'));
+addpath(genpath('inputData'));
 
 % declare global variables
 global SITEN BINNING EXTRA
@@ -15,47 +16,63 @@ global SITEN BINNING EXTRA
 BINNING = 1 / 2;
 EXTRA = ceil(BINNING*20);
 
+runMode = 'StellaTestQuench';
 
-% runMode = 'StellaTestLocal'; % 'test' OR 'full' OR 'StellaTest'
+% OPTIONS FOR RUNMODE
+
+% 'StellaICL4'
+% 'StellaTestICL4'
+% 'StellaTestLocal'
+% 'StellaTestQuench'
+
+% 'Katie'
+% 'KatieTest'
+
+% 'Emily'
 
 %% IMPORT DATA
 
-	SITEN = 9;
-	inputDataQuenchStellaTestICL4;
-	cond = createConditionStruct(exp);
-	cond = findImagePaths(exp,cond);
 
-% if strcmp(runMode,'test')
-% 	inputDataTest
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% elseif strcmp(runMode,'full')
-% 	SITEN = 9;
-% 	inputData;
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% elseif strcmp(runMode,'Stella')
-% 	SITEN = 9;
-% 	inputDataStellaICL4;
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% elseif strcmp(runMode,'StellaTest')
-% 	SITEN = 2;
-% 	inputDataStellaTestICL4;
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% elseif strcmp(runMode,'StellaTestQuench')
-% 	SITEN = 1;
-% 	inputDataQuenchStellaTestICL4;
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% elseif strcmp(runMode,'StellaTestLocal')
-% 	SITEN = 1;
-% 	inputDataLocalStellaTestICL4;
-% 	cond = createConditionStruct(exp);
-% 	cond = findImagePaths(exp,cond);
-% end
-
+switch runMode
+	
+	case 'StellaICL4'
+		SITEN = 9;
+		inputDataStellaICL4;
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'StellaTestICL4'
+		SITEN = 2;
+		inputDataStellaTestICL4;
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'StellaTestLocal'
+		SITEN = 1;
+		inputDataLocalStellaTestICL4;
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'StellaTestQuench'
+		SITEN = 9;
+		inputDataQuenchStellaTestICL4;
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'Katie'
+		SITEN = 9;
+		inputDataKatie
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'KatieTest'
+		SITEN = 2;
+		inputDataTestKatie
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+	case 'Emily'
+		SITEN = 1;
+		inputDataLocalEmily
+		cond = createConditionStruct(exp);
+		cond = findImagePaths(exp,cond);
+		
+end
+	
 conditionN = length(cond);
 
 disp('Completed importing data')
