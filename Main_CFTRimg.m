@@ -9,6 +9,7 @@ imtool close all
 % add the functions to the path
 addpath(genpath('functions'));
 addpath(genpath('inputData'));
+addpath(genpath('tests'));
 
 % declare global variables
 global SITEN BINNING EXTRA
@@ -17,18 +18,7 @@ BINNING = 1 / 2;
 EXTRA = ceil(BINNING*20);
 
 runMode = 'StellaTestQuench';
-
-% OPTIONS FOR RUNMODE
-
-% 'StellaICL4'
-% 'StellaTestICL4'
-% 'StellaTestLocal'
-% 'StellaTestQuench'
-
-% 'Katie'
-% 'KatieTest'
-
-% 'Emily'
+test_runMode(runMode)
 
 %% IMPORT DATA
 
