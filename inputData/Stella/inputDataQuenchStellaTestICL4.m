@@ -135,8 +135,8 @@ exp = createExperimentStruct(experimentN);
     exp(4).condWells(4,1:2) = {'F05','G05'};
     exp(4).condWells(5,1:2) = {'E06','F06'};
     exp(4).condWells(6,1:2) = {'F07','G07'};
-    exp(4).condWells(7,1:2) = {'F08','G08'}
-    exp(4).condWells(9,1:2) = {'G09','F09'}
+    exp(4).condWells(7,1:2) = {'F08','G08'};
+    exp(4).condWells(9,1:2) = {'G09','F09'};
     exp(4).condWells(9,1)   = {'F10'};
     exp(4).condWells(10,:)  = {'E11','F11','G11'};
 
