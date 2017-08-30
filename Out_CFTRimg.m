@@ -1,174 +1,225 @@
 
+saveLocalResultsHere='C:\Users\StellaPrins\Documents\results30082017.xls';
+
+%%
+colors = get(groot,'DefaultAxesColorOrder');
+% colors(1,:) --> blue
+% colors(2,:) --> red
+% colors(3,:) --> yellow
+% colors(4,:) --> purple
+% colors(5,:) --> green
+% colors(6,:) --> cyan
+% colors(7,:) --> brown?
+
+%% SET UP RESULTS STRUCT
+
+resultsLocal = createResultsLocalStruct(cond);
+for i=1:conditionN
+	resultsLocal(i) = filterNegativeMetric(resultsLocal(i));
+end
+
+% resultsLocal = normalizeResultsWT(resultsLocal);
+
 
 %% LOCALISATION OUTPUT
 
-cellN = sum(vertcat(cond.localCellN));
-
 meanYFPEntire		= zeros(1,conditionN);
-meanYFPMembrane = zeros(1,conditionN);
+meanYFPMembrane     = zeros(1,conditionN);
 stdYFPEntire		= zeros(1,conditionN);
-stdYFPMembrane = zeros(1,conditionN);
+stdYFPMembrane      = zeros(1,conditionN);
+medianYFPMembrane   = zeros(1,conditionN);
+iqrYFPMembrane      = zeros(1,conditionN);
 
-data = zeros(cellN,1);
+meanRedEntire       = zeros(1,conditionN);
+stdRedEntire		= zeros(1,conditionN);
 
-cellCount = 1;
 for i=1:conditionN
+
+	res = resultsLocal(i);
 	
-	fullCellN = vertcat(cond(i).imageLocal.cellN);
-	cond(i).localCellN = sum(fullCellN(:,end));
+	meanYFPEntire(i)		= mean(res.yelEntire ./ res.redEntire);
+	stdYFPEntire(i)			= std(res.yelEntire ./ res.redEntire);
+	meanYFPMembrane(i)	    = mean(res.yelMembrane ./ res.redEntire);
+	stdYFPMembrane(i)		= std(res.yelMembrane ./ res.redEntire);
+ 	medianYFPMembrane(i)	= median(res.yelMembrane ./ res.redEntire);
+ 	iqrYFPMembrane(i)		= iqr(res.yelMembrane ./ res.redEntire);
 	
-	yelMembrane	= vertcat(cond(i).imageLocal.yelMembrane);
-	yelEntire		= vertcat(cond(i).imageLocal.yelEntire);
-	redEntire		= vertcat(cond(i).imageLocal.redEntire);
-	
-	meanYFPEntire(i)		= mean(yelEntire ./ redEntire);
-	stdYFPEntire(i)			= std(yelEntire ./ redEntire);
-	meanYFPMembrane(i)	= mean(yelMembrane ./ redEntire);
-	stdYFPMembrane(i)		= std(yelMembrane ./ redEntire);
-	
-	data(cellCount:(cellCount+cond(i).localCellN-1)) = ...
-		yelMembrane ./ redEntire;
-	cellCount = cellCount + cond(i).localCellN;
-	
-	cond(i) = collectRatioData(cond(i));
+	meanRedEntire(i)        = mean(res.redEntire);
+	stdRedEntire(i)         = std(res.redEntire);
+
 
 end
+condition   = vertcat(cellstr('condition'),cellstr({resultsLocal.mutation}'));
+N           = vertcat(cellstr('N'),num2cell([resultsLocal.localCellN]'));
+Ymem        = vertcat((horzcat(cellstr('Membrane density'), cellstr('std'))),num2cell([meanYFPMembrane; stdYFPMembrane]'));
 
-disp([cond.mutation])
-disp(([cond.localHits]./[cond.localCellN])*100)
-disp([meanYFPEntire; stdYFPEntire])
-disp([meanYFPMembrane; stdYFPMembrane])
-disp([cond.localCellN])
+horzcat(condition,N,Ymem)
+
+xlswrite([saveLocalResultsHere],[condition,N,Ymem]);
+
+% ([meanRedEntire; stdRedEntire]')
+% disp([meanYFPEntire; stdYFPEntire])
+% disp([meanYFPMembrane; stdYFPMembrane])
+% disp([medianYFPMembrane; iqrYFPMembrane])
+
+
+%% TESTS FOR NORMALITY
+
+% close all
+% 
+% for i=1:conditionN
+% 	plotTestForNormality(resultsLocal(i));
+% end
+
+for b  = 1:length(cond)
+    MembraneDensity = resultsLocal(b).yelMembrane./resultsLocal(b).redEntire;
+    subplot(round(sqrt((length(cond)/2))),round(sqrt((length(cond)*2))),b);
+    qqplot(MembraneDensity);
+    yLab = ylabel(sprintf('F_{YFP,membrane} / F_{mCh,cell}\nQuantiles'));
+	set(yLab,'fontsize',9)
+    xLab = xlabel(sprintf('Standard Normal Quantiles'));
+    set(xLab,'fontsize',8)
+    title(cond(b).mutation);
+end
+
+figure;
+
+for b  = 1:length(cond)
+    MembraneDensity = resultsLocal(b).yelMembrane./resultsLocal(b).redEntire;
+    subplot(round(sqrt((length(cond)/2))),round(sqrt((length(cond)*2))),b);
+    hist(MembraneDensity);
+    xLab = xlabel('F_{YFP,membrane} / F_{mCh,cell}');
+	set(xLab,'fontsize',9)
+	yLab = ylabel('Frequency');
+	set(yLab,'fontsize',8)
+    title(cond(b).mutation);
+end
 
 %% STATISTICS
 
-cellN = sum(vertcat(cond.localCellN));
+close all
 
-group = cell(cellN,1);
+cellN       = sum(vertcat(resultsLocal.localCellN));
+statsData   = zeros(cellN,1);
+group       = cell(cellN,1);
 
 cellCount = 1;
 for i=1:conditionN
 	
-	group(cellCount:(cellCount+cond(i).localCellN-1)) = cond(i).mutation;
+	% rearrange order of data to display box plots in correct order
+	switch i
+		case 1
+			x=3;
+		case 2
+			x=1;
+		case 3
+			x=2;
+	end
+			
+	res = resultsLocal(x);
 	
-	cellCount = cellCount + cond(i).localCellN;
+	statsData(cellCount:(cellCount+res.localCellN-1)) = ...
+		res.yelMembrane ./ res.redEntire;
+	group(cellCount:(cellCount+res.localCellN-1)) = {res.mutation};
+	
+	cellCount = cellCount + res.localCellN;
 	
 end
 
-[p,tbl,stats]=kruskalwallis(data,group,'off');
 
-[c,m,h] = multcompare(stats,'CType','dunn-sidak');
+[pKruskalWallis, statsKW] = plotKruskalWallis(statsData,group);
+
+figure
+[c,m,~,gnames] = multcompare(statsKW,'CType','dunn-sidak');
+
 
 %% CORRELATION PLOTS
 
 close all
 
-for i=1:length(cond)
+for i=1:length(resultsLocal)
 	figure
-	plotLocalRedYelCorr(cond(i),'entire')
-	figure
-	plotLocalRedYelCorr(cond(i),'membrane')
-	figure
-	plotLocalRedYelCorr(cond(i),'interior')
+	plotLocalRedYelCorr(resultsLocal(i),'entire')
+% 	figure
+% 	plotLocalRedYelCorr(resultsLocal(i),'membrane')
 end
 
-% 	figure
+% figure
 % for i=1:length(cond)
 % 	subplot(3,3,i)
 % 	plotLocalRedYelCorr(cond(i),'entire')
 % 	subplot(3,3,i+3)
 % 	plotLocalRedYelCorr(cond(i),'membrane')
-% 	subplot(3,3,i+6)
-% 	plotLocalRedYelCorr(cond(i),'interior')
 % end
 
 %% CELL DISPLAY
 
 close all
 
-x=3;
-y=6;
+x=4;
+y=1;
 
-cond(x).imageLocal(y).cellN
+% cond(x).imageLocal(y).cellN
 
-[maxGrad, maxGradLoc,refGrad] = findGradient(cond(x).imageLocal(y));
+% [maxGrad, maxGradLoc,refGrad] = findGradient(cond1(x).imageLocal(y));
 
 for i=1:cond(x).imageLocal(y).cellN(end)
+% for i=[9,18] % x=3, y=8
+% for i=[3,17] % x=1, y=8
 	
-	str1 = sprintf('max %g\nloc %g\n\nref %g'...
-		,round(maxGrad(i),5)...
-		,maxGradLoc(i)...
-		,round(refGrad(i),5));
+% 	str1 = sprintf('max %g\nloc %g\n\nref %g'...
+% 		,round(maxGrad(i),5)...
+% 		,maxGradLoc(i)...
+% 		,round(refGrad(i),5));
+% 	
+% 	str2 = sprintf('membrane %g\nentire %g'...
+% 		,round(cond1(x).imageLocal(y).yelMembrane(i)/cond1(x).imageLocal(y).redEntire(i),3)...
+% 		,round(cond1(x).imageLocal(y).yelEntire(i)/cond1(x).imageLocal(y).redEntire(i),3));
+% 	
+% 	dim1 = [.15 .65 .1 .1];
+% 	dim2 = [.45 .65 .1 .1];
 	
-	str2 = sprintf('membrane %g\nentire %g'...
-		,round(cond(x).imageLocal(y).yelMembrane(i)/cond(x).imageLocal(y).redEntire(i),3)...
-		,round(cond(x).imageLocal(y).yelEntire(i)/cond(x).imageLocal(y).redEntire(i),3));
+	figure('position',[400 400 500 600])
+	subplot(3,3,1)
 	
-	dim1 = [.15 .65 .1 .1];
-	dim2 = [.45 .65 .1 .1];
-	
-	figure
-	subplot(5,3,1)
 	cellDisplay(cond(x).imageLocal(y),'red',i)
-	subplot(5,3,2)
+	subplot(3,3,2)
 	cellDisplay(cond(x).imageLocal(y),'yel',i)
-	subplot(5,3,3)
+	subplot(3,3,3)
 	cellDisplay(cond(x).imageLocal(y),'bw',i)
-	annotation('textbox',dim1,'String',str1,'FitBoxToText','on');
-	annotation('textbox',dim2,'String',str2,'FitBoxToText','on');
-	subplot(5,3,6)
-	cellDisplay(cond(x).imageLocal(y),'overlay',i)
-	subplot(5,1,[3,4,5],'fontsize',14)
+% 	annotation('textbox',dim1,'String',str1,'FitBoxToText','on');
+% 	annotation('textbox',dim2,'String',str2,'FitBoxToText','on');
+% 	subplot(5,3,6)
+% 	cellDisplay(cond1(x).imageLocal(y),'overlay',i)
+	subplot(3,1,[2,3],'position',[0.12 0.1 0.74 0.54])
 	plotFOverDistance(cond(x).imageLocal(y),i)
 	
 end
 
 
+%% IMAGE DISPLAY
+
+boundingBox1 = cond(x).imageLocal(y).boundingBox(3,:);
+boundingBox2 = cond(x).imageLocal(y).boundingBox(1,:);
+imgDisplayRectangle(cond(x).imageLocal(y),'red',boundingBox1,boundingBox2)
+
 
 %% QUENCHING OUTPUT
 
+resultsQuench = createResultsQuenchStruct(cond);
 
-for j=1:conditionN
+for i=1:conditionN
 	
-	testLogical = zeros(length(cond(j).imageQuench),1);
-	for i=1:length(cond(j).imageQuench)
-		testLogical(i) = strcmp(cond(j).imageQuench(i).test_control,'test');
-	end
+	res = resultsQuench(i);
 	
-	maxGradTest = zeros(sum(testLogical),1);
-	maxGradControl = zeros(length(testLogical) - sum(testLogical),1);
-	maxGradTestLoc = zeros(sum(testLogical),1);
-	maxGradControlLoc = zeros(length(testLogical) - sum(testLogical),1.);
+	fprintf('\n%s - Test\n',res.mutation)
+	disp([mean(res.maxGradTest),std(res.maxGradTest)])
+	disp([mean(res.maxGradTestLoc),std(res.maxGradTestLoc)])
 	
-	maxGrad = vertcat(cond(j).imageQuench.maxGradIodine);
-	maxGradLoc = vertcat(cond(j).imageQuench.maxGradLocation);
-	
-	counterTest = 1;
-	counterControl = 1;
-	for i=1:length(testLogical)
-		if testLogical(i) == 1
-			maxGradTest(counterTest) = maxGrad(i);
-			maxGradTestLoc(counterTest) = maxGradLoc(i);
-			counterTest = counterTest + 1;
-		elseif testLogical(i) == 0
-			maxGradControl(counterControl) = maxGrad(i);
-			maxGradControlLoc(counterControl) = maxGradLoc(i);
-			counterControl = counterControl + 1;
-		end
-	end
-	
-	fprintf('\n%s - Test\n',cond(j).mutation{1})
-	disp([mean(maxGradTest),std(maxGradTest)])
-	disp([mean(maxGradTestLoc),std(maxGradTestLoc)])
-	
-	fprintf('%s - Control\n',cond(j).mutation{1})
-	disp([mean(maxGradControl),std(maxGradControl)])
-	disp([mean(maxGradControlLoc),std(maxGradControlLoc)])
-	
-	
-%  	disp([maxGradTest,maxGradTestLoc,maxGradControl,maxGradControlLoc])
-
-	
+	fprintf('%s - Control\n',res.mutation)
+	disp([mean(res.maxGradControl),std(res.maxGradControl)])
+	disp([mean(res.maxGradControlLoc),std(res.maxGradControlLoc)])
+		
 end
 
 
@@ -195,10 +246,51 @@ end
 % subplot(1,3,3)
 % plotYelOverTime(cond(3),m)
 
+
+% figure
+% for i=1:25
+%     subplot(5,5,i)
+%     plotYelOverTimeCollated(cond(i))
+% end
+% 
+% figure
+% for i=26:conditionN
+%     k = i-25;
+%     subplot(5,5,k)
+% end
+
+for i=1:conditionN
+   figure
+   plotYelOverTimeCollated(cond(i))
+end
+
+
+plotMaxGradBarChart( resultsQuench )
+
+
+%% TESTS FOR NORMALITY
+
+for i=1:conditionN
+	plotTestForNormalityQuench(resultsQuench(i));
+end
+
+%% STATISTICS
+
+close all
+
+statsDataQuench = horzcat(resultsQuench.maxGradTest);
+
+[pKWQuench,tblKWQuench,statsKWQuench] = kruskalwallis(statsDataQuench)
+
 figure
-subplot(1,3,1)
-plotYelOverTimeCollated(cond(1))
-subplot(1,3,2)
-plotYelOverTimeCollated(cond(2))
-subplot(1,3,3)
-plotYelOverTimeCollated(cond(3))
+[cQuench,mQuench] = multcompare(statsKWQuench,'CType','dunn-sidak');
+
+
+[p,h,stats] = ranksum(resultsQuench(1).maxGradTest,resultsQuench(1).maxGradControl);
+%p = 0.976970255321976
+[p,h,stats] = ranksum(resultsQuench(2).maxGradTest,resultsQuench(2).maxGradControl);
+%p = 3.658455353897101e-05
+[p,h,stats] = ranksum(resultsQuench(3).maxGradTest,resultsQuench(3).maxGradControl);
+%p = 3.658455353897101e-05
+
+
