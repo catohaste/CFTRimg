@@ -146,12 +146,12 @@ end
 
 %% TESTING FILTERING ON CELL SIZE
 
-tic;
-saveLocation	= '~/Desktop/CFTR/testCellSize';
-fprintf				('Saving cell images...\n')
-sizeRecord		= testCellSize(resultsLocal,plate,saveLocation);
-fprintf				('Done\n')
-toc
+% tic;
+% saveLocation	= '~/Desktop/CFTR/testCellSize';
+% fprintf				('Saving cell images...\n')
+% sizeRecord		= testCellSize(resultsLocal,plate,saveLocation);
+% fprintf				('Done\n')
+% toc
 
 T = cell2table(sizeRecord,'VariableNames',...
 	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth','solidity','edgeProportion'});

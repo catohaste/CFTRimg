@@ -66,6 +66,8 @@ for j=1:conditionN
 		plateIdx = uniquePlateImage(i,1);
 		imageIdx = uniquePlateImage(i,2);
 		
+		BB = plateStructArray(plateIdx).imageLocal(imageIdx).boundingBox(:,:);
+		
 		redAxes				= localDisplayImage(plateStructArray(plateIdx).imageLocal(imageIdx),'red');
 		redAxes				= localAddRectangleToImage(redAxes,BB);
 		redFrame			= getframe(redAxes);
