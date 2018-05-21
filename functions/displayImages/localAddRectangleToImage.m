@@ -9,7 +9,7 @@ function plotAxes = localAddRectangleToImage( plotAxes, boundingBoxes )
 %		boundingBox = [topLeftXval topLeftYval width height], though not
 %		integers.
 
-for i = 1:length(boundingBoxes)
+for i = 1:size(boundingBoxes,1)
 	currentBB = boundingBoxes(i,:);
 	rectBB(1) = floor(currentBB(1)) ;
 	rectBB(2) = ceil(currentBB(2)) ;
