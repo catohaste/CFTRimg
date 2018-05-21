@@ -7,7 +7,7 @@ addpath(genpath(fullfile('~/Desktop/CFTR/input'))) %% include the location of yo
 %%
 
 inputDataCatoTest % the name of your input file
-saveWorkspaceHere = '~/Desktop/CFTR/workspaces/testLocal_2018_05_18';
+saveWorkspaceHere = '~/Desktop/CFTR/workspaces/testCellSize';
 
 normConditionStr	= 'WT';
 

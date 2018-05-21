@@ -11,16 +11,19 @@ metricN = 7;
 sizeRecord = cell(length(resultsStructArray),metricN + 1);
 
 for j=1:conditionN
+	
 	resultsStruct = resultsStructArray(j);
 	cellN = length(resultsStruct.cellLocation);
+	cellLoc = resultsStruct.cellLocation;
 	
 	mkdir(fullfile(saveLocation,'cells',resultsStruct.mutation))
 	
+	% output each cell to file with size parameters labelled
 	for i=1:cellN
 		
-		plateIdx = resultsStruct.cellLocation(i,1);
-		imageIdx = resultsStruct.cellLocation(i,2);
-		bBoxIdx = resultsStruct.cellLocation(i,3);
+		plateIdx = cellLoc(i,1);
+		imageIdx = cellLoc(i,2);
+		bBoxIdx = cellLoc(i,3);
 		
 		[redCellImage, yelCellImage, sizeParams] = ...
 			cellWithBorderSizeParams(plateStructArray(plateIdx).imageLocal(imageIdx),bBoxIdx);
@@ -39,6 +42,7 @@ for j=1:conditionN
 		
 	end
 	
+	% save results in a cell array
 	sizeRecord{j,1} = resultsStruct.mutation;
 	sizeRecord{j,2} = cellN;
 	sizeRecord{j,3} = sizeParams(1);
@@ -47,6 +51,29 @@ for j=1:conditionN
 	sizeRecord{j,6} = sizeParams(4);
 	sizeRecord{j,7} = sizeParams(5);
 	sizeRecord{j,8} = sizeParams(6);
+	
+	
+	mkdir(fullfile(saveLocation,'boxedImages',resultsStruct.mutation))
+	
+	folderName = fullfile(saveLocation,'boxedImages',resultsStruct.mutation);
+	
+	% find unique plate and image numbers
+	uniquePlateImage = unique(resultsStruct.cellLocation(:,1:2),'rows');
+	
+	% save full images to file with bounding boxes
+	for i=1:length(uniquePlateImage)
+		
+		plateIdx = uniquePlateImage(i,1);
+		imageIdx = uniquePlateImage(i,2);
+		
+		redAxes				= localDisplayImage(plateStructArray(plateIdx).imageLocal(imageIdx),'red');
+		redAxes				= localAddRectangleToImage(redAxes,BB);
+		redFrame			= getframe(redAxes);
+		imageFilename	= sprintf('plate%d_image%d.jpg',plateIdx,imageIdx);
+		imwrite(redFrame.cdata,fullfile(folderName,imageFilename));
+		close all
+		
+	end
 	
 end
 

@@ -19,11 +19,12 @@ for i=1:length(resultsLocal)
 	N_MemDens_cellN(i,:)			= length(x);
 end
 
-titles      = cellstr(char('conditions', 'N', 'mean rho','lower CI','upper CI', 'median rho'))';
-results			=	horzcat(cond_MemDens_cellN,num2cell(N_MemDens_cellN),...
+titlesCell  = cellstr(char('conditions', 'N', 'mean_rho','lower_CI','upper_CI', 'median_rho'))';
+resultsCell =	horzcat(cond_MemDens_cellN,num2cell(N_MemDens_cellN),...
 							num2cell(mean_MemDens_cellN), num2cell(CI_MemDens_cellN), ...
 							num2cell(median_MemDens_cellN));
-vertcat			 (titles,results)
+
+vertcat			 (titlesCell,resultsCell)
 % if ispc == true
 % 	xlswrite(saveLocalResultsHere,results)
 % elseif isunix==true
@@ -70,13 +71,14 @@ for i=1:length(resultsLocal)															% for the number of conditions
 	STDEV_MemDens_plateN(i,:)		= nanstd(x);
 end
 
-titles      = cellstr(char('conditions', 'N', 'mean rho','STDEV rho', 'SEM rho',...
-							'lower CI','upper CI', 'median rho'))';
-results			=	horzcat(cond_MemDens_plateN,num2cell(N_MemDens_plateN),...
+titlesExp		= cellstr(char('conditions', 'N', 'mean_rho','STDEV_rho', 'SEM_rho',...
+							'lower_CI','upper_CI', 'median_rho'))';
+resultsExp	=	horzcat(cond_MemDens_plateN,num2cell(N_MemDens_plateN),...
 							num2cell(mean_MemDens_plateN),num2cell(STDEV_MemDens_plateN),...
 							num2cell(sem_MemDens_plateN),...
 							num2cell(CI_MemDens_plateN), num2cell(median_MemDens_plateN));
-vertcat(titles,results)
+
+vertcat(titlesExp,resultsExp)
 
 
 %% STATISTICS (each experiment as sample)
@@ -153,7 +155,12 @@ toc
 
 T = cell2table(sizeRecord,'VariableNames',...
 	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth','solidity','edgeProportion'});
+tableResultsCell	= cell2table(resultsCell,'VariableNames',titlesCell);
+tableResultsExp		= cell2table(resultsExp,'VariableNames',titlesExp);
+
 writetable(T,'~/Desktop/CFTR/testCellSize/sizeRecord.txt','Delimiter','\t','WriteRowNames',true)
+writetable(tableResultsCell,'~/Desktop/CFTR/testCellSize/resultsCell.txt','Delimiter','\t','WriteRowNames',true)
+writetable(tableResultsExp,'~/Desktop/CFTR/testCellSize/resultsExp.txt','Delimiter','\t','WriteRowNames',true)
 
 
 %% IMAGE DISPLAY with all selected cells boxed
