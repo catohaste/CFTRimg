@@ -127,19 +127,33 @@ end
 
 %% CORRELATION PLOTS
 
-close all
-% figure
-for i=1:length(resultsLocal)
-	figure
-%     subplot(1,length(resultsLocal),i)
-	plotLocalRedYelCorr(resultsLocal(i),'entire');
-% 	hold on
-end
+% close all
+% % figure
+% for i=1:length(resultsLocal)
+% 	figure
+% %     subplot(1,length(resultsLocal),i)
+% 	plotLocalRedYelCorr(resultsLocal(i),'entire');
+% % 	hold on
+% end
 
 for i=1:length(resultsLocal)
 	figure
 	plotLocalSizeRhoCorr(resultsLocal(i),plate);
 end
+
+
+%% TESTING FILTERING ON CELL SIZE
+
+tic;
+saveLocation			= '~/Desktop/CFTR/testCellSize';
+fprintf						('Saving cell images...\n')
+sizeRecord				= testCellSize(resultsLocal,plate,saveLocation);
+fprintf						('Done\n')
+toc
+
+T = cell2table(sizeRecord,'VariableNames',...
+	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth'});
+writetable(T,'~/Desktop/CFTR/testCellSize/sizeRecord.txt','Delimiter','\t','WriteRowNames',true)
 
 
 %% IMAGE DISPLAY with all selected cells boxed
