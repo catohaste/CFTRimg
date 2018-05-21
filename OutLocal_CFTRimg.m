@@ -8,7 +8,7 @@ for i=1:length(resultsLocal)																								% for all conditions
 	meanMemDens			= mean(resultsLocal(i).logNormMemDens);										% mean log rho
 	C(:,i)					= 10.^meanMemDens;																				% back transformed mean per condition
 end
-for i=1:length(resultsLocal)			
+for i=1:length(resultsLocal)
 	x					= resultsLocal(i).logNormMemDens;							% log transformed rho CFTR membrane
 	SEM				= std(x)/sqrt(length(x));											% Standard Error (after log transform)
 	ts				= tinv([0.025  0.975],length(x)-1);						% T-Score (for 95% Confidence Interval)									
@@ -145,14 +145,14 @@ end
 %% TESTING FILTERING ON CELL SIZE
 
 tic;
-saveLocation			= '~/Desktop/CFTR/testCellSize';
-fprintf						('Saving cell images...\n')
-sizeRecord				= testCellSize(resultsLocal,plate,saveLocation);
-fprintf						('Done\n')
+saveLocation	= '~/Desktop/CFTR/testCellSize';
+fprintf				('Saving cell images...\n')
+sizeRecord		= testCellSize(resultsLocal,plate,saveLocation);
+fprintf				('Done\n')
 toc
 
 T = cell2table(sizeRecord,'VariableNames',...
-	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth'});
+	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth','solidity','edgeProportion'});
 writetable(T,'~/Desktop/CFTR/testCellSize/sizeRecord.txt','Delimiter','\t','WriteRowNames',true)
 
 

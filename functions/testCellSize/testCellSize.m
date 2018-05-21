@@ -7,7 +7,7 @@ function sizeRecord = testCellSize( resultsStructArray ,plateStructArray ...
 
 conditionN = length(resultsStructArray);
 
-metricN = 5;
+metricN = 7;
 sizeRecord = cell(length(resultsStructArray),metricN + 1);
 
 for j=1:conditionN
@@ -22,13 +22,11 @@ for j=1:conditionN
 		imageIdx = resultsStruct.cellLocation(i,2);
 		bBoxIdx = resultsStruct.cellLocation(i,3);
 		
-		rhoVal = resultsStruct.yelMembrane(i) / resultsStruct.redEntire(i);
-		
 		[redCellImage, yelCellImage, sizeParams] = ...
 			cellWithBorderSizeParams(plateStructArray(plateIdx).imageLocal(imageIdx),bBoxIdx);
 
-		textStr = sprintf('%.0f\n%0.f\n%.0fx%.0f\nrho = %0.4f',...
-			sizeParams(1),sizeParams(2),sizeParams(3),sizeParams(4),rhoVal);
+		textStr = sprintf('%.0f %0.f\n%.0fx%.0f\n%0.3f %0.3f',...
+			sizeParams(1),sizeParams(2),sizeParams(3),sizeParams(4),sizeParams(5),sizeParams(6));
 		
 		redTextImage = insertText(redCellImage,[1 1],textStr,'textcolor','white','boxcolor','black');
 		yelTextImage = insertText(yelCellImage,[1 1],textStr,'textcolor','white','boxcolor','black');
@@ -47,7 +45,8 @@ for j=1:conditionN
 	sizeRecord{j,4} = sizeParams(2);
 	sizeRecord{j,5} = sizeParams(3);
 	sizeRecord{j,6} = sizeParams(4);
-	
+	sizeRecord{j,7} = sizeParams(5);
+	sizeRecord{j,8} = sizeParams(6);
 	
 end
 
