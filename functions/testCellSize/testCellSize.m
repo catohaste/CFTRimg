@@ -31,8 +31,8 @@ for j=1:conditionN
 		textStr = sprintf('%.0f %0.f\n%.0fx%.0f\n%0.3f %0.3f',...
 			sizeParams(1),sizeParams(2),sizeParams(3),sizeParams(4),sizeParams(5),sizeParams(6));
 		
-		redTextImage = insertText(redCellImage,[1 1],textStr,'textcolor','white','boxcolor','black');
-		yelTextImage = insertText(yelCellImage,[1 1],textStr,'textcolor','white','boxcolor','black');
+		redTextImage = insertText(redCellImage,[1 1],textStr,'textcolor','white','boxcolor','black','FontSize',10);
+		yelTextImage = insertText(yelCellImage,[1 1],textStr,'textcolor','white','boxcolor','black','FontSize',10);
 		
 		redFilename = sprintf('red-%d_%d_%d.jpg',plateIdx,imageIdx,bBoxIdx);
 		yelFilename = sprintf('yel-%d-%d-%d.jpg',plateIdx,imageIdx,bBoxIdx);
