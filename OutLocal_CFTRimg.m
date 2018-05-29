@@ -154,7 +154,7 @@ fprintf				('Done\n')
 toc
 
 T = cell2table(sizeRecord,'VariableNames',...
-	{'Condition','cellN','cellArea','cellPerimeter','cellLength','cellWidth','solidity','edgeProportion'});
+	{'Condition','cellN','cellArea','cellPerimeter','areaOverPerimeter','cellLength','cellWidth',});
 tableResultsCell	= cell2table(resultsCell,'VariableNames',titlesCell);
 tableResultsExp		= cell2table(resultsExp,'VariableNames',titlesExp);
 

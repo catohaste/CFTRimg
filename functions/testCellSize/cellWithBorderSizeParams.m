@@ -26,26 +26,13 @@ yelCellImage = imoverlay(yelCropped,edgeCellMask,'w');
 
 [labelled, ~] = bwlabel(cellMask,8);
 properties = regionprops(labelled ...
-	,'MinorAxisLength','MajorAxisLength','Area','Perimeter','Solidity');
+	,'MinorAxisLength','MajorAxisLength','Area','Perimeter');
 
-perimeterMask = cellMask;
-
-perimeterMask(:) = 0;
-perimeterMask(:,1) = 1;
-perimeterMask(:,end) = 1;
-perimeterMask(1,:) = 1;
-perimeterMask(end,:) = 1;
-
-edgeMask = cellMask & perimeterMask;
-edgeProportion = sum(edgeMask(:)) / sum(perimeterMask(:));
-
-sizeParams = zeros(6,1);
+sizeParams = zeros(5,1);
 sizeParams(1) = properties.Area;
 sizeParams(2) = properties.Perimeter;
-sizeParams(3) = properties.MajorAxisLength;
-sizeParams(4) = properties.MinorAxisLength;
-sizeParams(5) = properties.Solidity;
-sizeParams(6) = edgeProportion;
-
+sizeParams(3) = sizeParams(1) / sizeParams(2);
+sizeParams(4) = properties.MajorAxisLength;
+sizeParams(5) = properties.MinorAxisLength;
 
 end

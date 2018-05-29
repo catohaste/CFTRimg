@@ -7,7 +7,7 @@ function sizeRecord = testCellSize( resultsStructArray ,plateStructArray ...
 
 conditionN = length(resultsStructArray);
 
-metricN = 7;
+metricN = 6;
 sizeRecord = cell(length(resultsStructArray),metricN + 1);
 
 for j=1:conditionN
@@ -28,8 +28,8 @@ for j=1:conditionN
 		[redCellImage, yelCellImage, sizeParams] = ...
 			cellWithBorderSizeParams(plateStructArray(plateIdx).imageLocal(imageIdx),bBoxIdx);
 
-		textStr = sprintf('%.0f %0.f\n%.0fx%.0f\n%0.3f %0.3f',...
-			sizeParams(1),sizeParams(2),sizeParams(3),sizeParams(4),sizeParams(5),sizeParams(6));
+		textStr = sprintf('%.0f %0.f %.1f\n%.0fx%.0f',...
+			sizeParams(1),sizeParams(2),sizeParams(3),sizeParams(4),sizeParams(5));
 		
 		redTextImage = insertText(redCellImage,[1 1],textStr,'textcolor','white','boxcolor','black','FontSize',10);
 		yelTextImage = insertText(yelCellImage,[1 1],textStr,'textcolor','white','boxcolor','black','FontSize',10);
@@ -50,7 +50,6 @@ for j=1:conditionN
 	sizeRecord{j,5} = sizeParams(3);
 	sizeRecord{j,6} = sizeParams(4);
 	sizeRecord{j,7} = sizeParams(5);
-	sizeRecord{j,8} = sizeParams(6);
 	
 	
 	mkdir(fullfile(saveLocation,'boxedImages',resultsStruct.mutation))
