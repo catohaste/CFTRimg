@@ -5,8 +5,8 @@ close all
 
 addpath(genpath('functions'))
 
-addpath(genpath(fullfile('example','input'))) % location of your input folder
-example_local % the name of your input file
+addpath(genpath(fullfile('~','Desktop','CFTR','input'))) % location of your input folder
+inputCatoNPPBLocal % the name of your input file
 
 %% STRUCTURING DATA
 tic

@@ -94,15 +94,20 @@ end
 
 %% QUENCHING PLOTS 
 close all
-figure;
-
+figure
 for i=1:conditionN
-	  subplot(4,ceil(conditionN/2),i);
-		plotYelOverTimeCollated(resultsQuench(i));
-		subplot(4,ceil(conditionN/2),i+conditionN);
-		plotYelOverTime(resultsQuench(i));
+	  subplot(2,4,i)
+		plotYelOverTimeCollated(resultsQuench(i))
 end
 
+figure
+for i=1:conditionN
+		subplot(2,4,i)
+		plotYelOverTime(resultsQuench(i))
+end
+
+saveQuenchingTimelineHere   = fullfile('~','Desktop','timelineQuench.csv');
+outputQuenchTimelineToExcelTemp (exp, saveQuenchingTimelineHere)
 
 % figure
 % plotMaxGradBarChart(resultsQuench) %% not working

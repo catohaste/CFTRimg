@@ -72,6 +72,10 @@ results			=	horzcat(cond_MemDens_cellN,normCond_MemDens_cellN,...
 						  CI_LL_MemDens_cellN,CI_UL_MemDens_cellN, median_MemDens_cellN);
 vertcat			 (titles,results)
 
+summaryTable = cell2table(vertcat(titles,results));
+
+writetable(summaryTable,'~/Desktop/summary.csv')
+
 
 %% STATISTICS (each cell as sample)
 
@@ -88,6 +92,7 @@ for i=1:length(resultsLocal) % for each condition
 end
 
 [p,tbl,stats]		= anova1(statsData_cell, group); % on the log transformed normalised data
+figure
 [c,m,~,gnames]	= multcompare(stats,'CType','dunn-sidak'); % multiple comparisons between all groups with bonferroni correction
 c_titles				= cellstr(char('g1', 'g2', 'LL mean dif CI', 'mean dif(g1-g2)',...
 									'UL mean dif CI','P-value'))';

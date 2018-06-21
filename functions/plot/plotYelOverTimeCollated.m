@@ -4,20 +4,21 @@ function plotYelOverTimeCollated( resultsStruct )
 
 colors          = get(groot,'DefaultAxesColorOrder');
 
+timeline = [12 13 33];
+
 yelTest					= (resultsStruct.yelInsideOverTTest)';
 yelControl			= resultsStruct.yelInsideOverTControl';
 
 meanYelTest         = mean((yelTest),2);
-meanYelTest					= meanYelTest(5:70);
+meanYelTest					= meanYelTest(timeline(1):timeline(end));
 meanYelControl      = mean((yelControl),2);
-meanYelControl			= meanYelControl(5:70);
+meanYelControl			= meanYelControl(timeline(1):timeline(end));
 errYelTest          = std((yelTest),0,2);
-errYelTest					= errYelTest(5:70);
+errYelTest					= errYelTest(timeline(1):timeline(end));
 errYelControl       = std((yelControl),0,2);
-errYelControl				= errYelControl(5:70);
+errYelControl				= errYelControl(timeline(1):timeline(end));
 
-x = 0:2:138;
-x = x(1:66);
+x = horzcat([0,0.5,1],3:2:39);
 shadedErrorBar(x,meanYelControl,errYelControl...
 	,'lineprops',{'.','color',colors(5,:),'linewidth',0.8});
 hold on;
@@ -25,12 +26,12 @@ shadedErrorBar(x,meanYelTest(),errYelTest()...
 	,'lineprops',{'.','linewidth',0.8});
 p1 = plot(nan,nan,'-','color',colors(5,:),'linewidth',1);
 p2 = plot(nan,nan,'-', 'linewidth',1);
-plot([0 0],[0 1.3],':k','markersize',1)
-plot([40 40],[0 1.3],':k','markersize',1)
+% plot([0 0],[0 1.3],':k','markersize',1)
+% plot([40 40],[0 1.3],':k','markersize',1)
 % a1=annotation('textbox',[0.165 0.22 0.05 0.05],'string',sprintf('Iodide\naddition'),'fitboxtotext','on');
 % a2=annotation('textbox',[0.38 0.22 0.05 0.05],'string',sprintf('Forskolin\naddition'),'fitboxtotext','on');
 ylim([0 1.3])
-xlim([-5 140])
+xlim([-2 40])
 
 title(resultsStruct.condition)
 ax = gca;
