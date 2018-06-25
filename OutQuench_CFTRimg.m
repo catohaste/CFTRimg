@@ -95,15 +95,20 @@ end
 %% QUENCHING PLOTS 
 close all
 figure
-for i=1:conditionN
-	  subplot(2,4,i)
+counter = 1;
+relevant = [2,3,4,5,6,7,11,12,13];
+for i=relevant
+	  subplot(3,3,counter)
 		plotYelOverTimeCollated(resultsQuench(i))
+		counter = counter +1;
 end
 
 figure
-for i=1:conditionN
-		subplot(2,4,i)
+counter =1;
+for i=relevant
+		subplot(3,3,counter)
 		plotYelOverTime(resultsQuench(i))
+		counter = counter +1;
 end
 
 saveQuenchingTimelineHere   = fullfile('~','Desktop','timelineQuench.csv');
