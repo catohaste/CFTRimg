@@ -5,8 +5,8 @@ close all
 
 addpath(genpath('functions'))
 
-addpath(genpath(fullfile('~','Desktop','CFTR','input'))) % location of your input folder
-inputCatoNPPBQuench % the name of your input file
+addpath(genpath(fullfile('~/Desktop/CFTR','input'))) % location of your input folder
+inputCatoNPPBForskolinQuench % the name of your input file
 
 %% STRUCTURING DATA
 tic
