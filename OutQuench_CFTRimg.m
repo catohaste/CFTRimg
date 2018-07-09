@@ -97,9 +97,10 @@ end
 close all
 figure
 counter = 1;
-relevant = [2,3,4,5,6,7,11,12,13];
+relevant = 1:12;
+% relevant = [2,3,4,5,6,7,11,12,13];
 for i=relevant
-	  subplot(3,3,counter)
+	  subplot(3,4,counter)
 		plotYelOverTimeCollated(resultsQuench(i))
 		counter = counter +1;
 end
@@ -107,13 +108,13 @@ end
 figure
 counter =1;
 for i=relevant
-		subplot(3,3,counter)
+		subplot(3,4,counter)
 		plotYelOverTime(resultsQuench(i))
 		counter = counter +1;
 end
 
 saveQuenchingTimelineHere   = fullfile('~','Desktop','timelineQuench.csv');
-outputQuenchTimelineToExcelTemp (exp, saveQuenchingTimelineHere)
+outputQuenchTimelineToExcelTemp (plate, saveQuenchingTimelineHere)
 
 % figure
 % plotMaxGradBarChart(resultsQuench) %% not working
