@@ -42,7 +42,7 @@ data = horzcat(condition,test_control,yelInside);
 
 T = cell2table(vertcat(header,data));
 
-	writetable(T,saveLocationPath)
+	writetable(T,saveLocationPath,'WriteVariableNames',false)
 	
 end
 
