@@ -6,13 +6,14 @@ close all
 addpath(genpath('functions'))
 
 addpath(genpath(fullfile('example','input'))) % location of your input folder
-example_local																	% the name of your input file
+inputFileName = 'example_local.m';						% name of you input file as string
+[inputFolder,saveWorkspaceHere] = inputFileCheckAndRun_local(inputFileName);
 
 %% STRUCTURING DATA
 tic
-plate		= createPlateStruct_local(input);			% creates an empty struct for each plate,
-plate		= populatePlate_local(input,plate);		% moves appropriate data into plate struct
-plateN	= length(plate);											% and creates a struct for each image
+plate		= createPlateStruct_local(inputFolder);		% creates an empty struct for each plate,
+plate		= populatePlate_local(inputFolder,plate);	% moves appropriate data into plate struct
+plateN	= length(plate);													% and creates a struct for each image
 
 disp('Completed setting up data structures')
 time(1) = toc;
