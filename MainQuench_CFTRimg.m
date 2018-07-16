@@ -6,12 +6,13 @@ close all
 addpath(genpath('functions'))
 
 addpath(genpath(fullfile('example','input'))) % location of your input folder
-example_quench % the name of your input file
+inputFileName = 'example_quench.m';						% name of you input file as string
+[inputFolder,saveWorkspaceHere] = inputFileCheckAndRun_quench(inputFileName);
 
 %% STRUCTURING DATA
 tic
-plate		= createPlateStruct_quench(input);		% creates an empty struct for each plate
-plate		= populatePlate_quench(input,plate);	% collects the path names for each image
+plate		= createPlateStruct_quench(inputFolder);		% creates an empty struct for each plate
+plate		= populatePlate_quench(inputFolder,plate);	% collects the path names for each image
 plateN	= length(plate);											% and creates a struct for each image
 
 disp('Completed setting up data structures')
