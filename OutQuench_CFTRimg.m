@@ -31,9 +31,9 @@ for i=conditionIdx
 end
 
 desktopDir = getDesktopDir();
-saveQuenchingTimelineHere   = fullfile(desktopDir,'timelineQuench.csv');
-outputQuenchTimelineToExcelTemp (plate, saveQuenchingTimelineHere)
+saveQuenchResultsFolder			= fullfile(desktopDir,'resultsQuench');
+outputQuenchTimelineToExcel(plate,saveQuenchResultsFolder);
 
-saveModelTimelineHere   = fullfile(desktopDir,'modelTimeline.csv');
+saveModelTimelineHere   = fullfile(saveQuenchResultsFolder,'modelTimeline.csv');
 outputModelTimelineToExcel (resultsQuench, saveModelTimelineHere)
 
