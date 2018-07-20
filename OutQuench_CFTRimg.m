@@ -1,7 +1,6 @@
 
 desktopDir = getDesktopDir();
-saveQuenchResultsHere       = fullfile(desktopDir,'resultsQuench');
-saveQuenchingTimelineHere   = fullfile(desktopDir,'timelineQuench');
+saveQuenchResultsFolder			= fullfile(desktopDir,'resultsQuench');
 
 conditionN = length(resultsQuench);
 
@@ -56,7 +55,7 @@ if ispc == true
 						
 elseif isunix == 1
 	
-	outputResultsQuenchToExcelMAC( resultsQuench , saveQuenchResultsHere );
+	outputResultsQuenchToExcelMAC( resultsQuench , saveQuenchResultsFolder );
 	
 end
 	        
@@ -88,9 +87,13 @@ if ispc == true
 	
 elseif isunix == true
 	
-	outputQuenchTimelineToExcelMAC(resultsQuench,saveQuenchingTimelineHere);
+	outputQuenchTimelineToExcelMAC(resultsQuench,saveQuenchResultsFolder);
 	
 end
+
+%% OUTPUT RAW TIMELINE DATA
+
+outputQuenchTimelineToExcel(plate,saveQuenchResultsFolder);
 
 
 %% QUENCHING PLOTS 
