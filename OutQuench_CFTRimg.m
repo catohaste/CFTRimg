@@ -34,6 +34,6 @@ desktopDir = getDesktopDir();
 saveQuenchResultsFolder			= fullfile(desktopDir,'resultsQuench');
 outputQuenchTimelineToExcel(plate,saveQuenchResultsFolder);
 
-saveModelTimelineHere   = fullfile(saveQuenchResultsFolder,'modelTimeline.csv');
-outputModelTimelineToExcel (resultsQuench, saveModelTimelineHere)
+% saveModelTimelineHere   = fullfile(saveQuenchResultsFolder,'modelTimeline.csv');
+% outputModelTimelineToExcel (resultsQuench, saveModelTimelineHere)
 
