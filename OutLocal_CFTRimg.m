@@ -2,6 +2,7 @@
 
 desktopDir = getDesktopDir();
 saveLocalResultsFolder = fullfile(desktopDir,'resultsLocal');
+
 conditionN = length(resultsLocal);
 conditionsSummary = cell(conditionN + 1,3);
 conditionsSummary(1,:) = {'index','condition','normalized to'};
