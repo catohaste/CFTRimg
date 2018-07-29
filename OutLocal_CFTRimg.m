@@ -1,49 +1,24 @@
-%% RESULTS SUMMARY
+
+%% OUTPUT TO EXCEL
+
+close all
 
 desktopDir = getDesktopDir();
 saveLocalResultsFolder = fullfile(desktopDir,'resultsLocal');
 
-conditionN = length(resultsLocal);
-conditionsSummary = cell(conditionN + 1,3);
-conditionsSummary(1,:) = {'index','condition','normalized to'};
-fullConditionNames = cell(conditionN,1);
+[perPlateDisplay,plateNTable,compStatsTable] = ...
+	outputResultsLocalToExcel(resultsLocal,normPlate,saveLocalResultsFolder);
 
-for i=1:conditionN
-	conditionsSummary{i+1,1} = i;
-	conditionsSummary{i+1,2} = resultsLocal(i).condition;
-	conditionsSummary{i+1,3} = resultsLocal(i).normCondition;
-	
-	fullConditionNames(i) = strcat({resultsLocal(i).condition},{' norm '},...
-		{resultsLocal(i).normCondition});
-end
-
-disp(conditionsSummary)
-
-%% DELETE UNNECESSARY CONDITIONS
-
-[idxToDelete,~]= listdlg('ListString',fullConditionNames...
-	,'Name','Select conditions to delete'...
-	,'ListSize',[300 300]...
-	,'PromptString','Use CTRL or CMD to select multiple conditions.');
-
-structsToKeep = true([1 length(resultsLocal)]);
-if ~isempty(idxToDelete)
-	for i=1:length(idxToDelete)
-		structsToKeep(idxToDelete(i)) = false;
-	end
-end
-
-resultsLocal = resultsLocal(structsToKeep);
-conditionN = length(resultsLocal);
-
-%% OUTPUT TO EXCEL
-
-outputResultsLocalToExcel(resultsLocal,saveLocalResultsFolder)
+fprintf('\nDescriptive statistics with each plate as N:\n\n')
+disp(plateNTable)
+fprintf('\n\nP-values for condition comparisons\n(adjusted for multiple comparisons):\n\n')
+disp(compStatsTable)
+fprintf('\n')
 
 %% DESCRIPTIVES (each cell as sample)
 
 for i=1:length(resultsLocal)																								% for all conditions
-	meanMemDens			= mean(resultsLocal(i).logMemDens);										% mean log rho
+	meanMemDens			= mean(resultsLocal(i).logMemDens);												% mean log rho
 	C(:,i)					= 10.^meanMemDens;																				% back transformed mean per condition
 end
 
@@ -161,11 +136,6 @@ results = horzcat(expNames,num2cell(B));
 titles = horzcat(cell(1,1),conditionNames');
 
 vertcat(titles,results)
-
-% results = horzcat(conditionGroups,expGroups,num2cell(meanMemDens));
-% titles	= {'full condition','experiment name','mean membrane density'};
-% 
-% vertcat(titles,results)
 
 
 %% STATISTICS T-test (each experiment as sample)
