@@ -7,7 +7,9 @@ function normStructArray = createNormalizeStruct( plateStructArray )
 plateN = length(plateStructArray);
 
 normalizeTemplate = struct(...
-			'condition',{{}}...
+			'plateStr',[]...			
+			,'experimentStr',[]...
+			,'condition',{{}}...
 			,'normCondition',''...
 			,'cellLocation',{{}}...
 			,'yelMembrane',[]...
@@ -21,11 +23,14 @@ normalizeTemplate = struct(...
 		
 
 for j=1:plateN
-
+	
+	normStruct								= normalizeTemplate;
+	
 	plateStruct = plateStructArray(j);
-
-	normStruct = normalizeTemplate;
-	normStruct.normCondition = plateStruct.normConditionStr;
+	
+	normStruct.plateStr				= plateStruct.plateStr;
+	normStruct.experimentStr	= plateStruct.experimentStr;
+	normStruct.normCondition	= plateStruct.normConditionStr;
 
 	for i=1:length(plateStruct.image)
 
