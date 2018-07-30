@@ -183,7 +183,7 @@ for i = 1:plateNConditionN
 	plateNLogMemDens_SEM(i)			= plateNLogMemDens_STDev(i) / sqrt(plateNLogMemDens_N(i));
 	confIntTStats								= tinv([0.025  0.975]...
 		,plateNLogMemDens_N(i) - 1);
-	plateNLogMemDens_CI_LL(i)		= mean(plateNLogMemDens_values) - (confIntTStats(1)*plateNLogMemDens_SEM(i));
+	plateNLogMemDens_CI_LL(i)		= mean(plateNLogMemDens_values) + (confIntTStats(1)*plateNLogMemDens_SEM(i));
 	plateNLogMemDens_CI_UL(i)		= mean(plateNLogMemDens_values) + (confIntTStats(2)*plateNLogMemDens_SEM(i));
 	plateNLogMemDens_median(i)	= median(plateNLogMemDens_values);
 	
@@ -211,7 +211,7 @@ group2Name	= gnames(multComparison(:,2));
 pvalues			= multComparison(:,6);
 
 multComparisonHeader	= {'group1','group2','p_value'};
-multComparisonResults = horzcat(group1Name,group2Name,pvalues);
+multComparisonResults = horzcat(group1Name,group2Name,num2cell(pvalues));
 
 compStatsCellArray = vertcat(multComparisonHeader,multComparisonResults);
 compStatsTable = cell2table(multComparisonResults,'VariableNames',multComparisonHeader);
