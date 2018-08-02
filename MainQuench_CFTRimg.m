@@ -5,8 +5,9 @@ close all
 
 addpath(genpath('functions'))
 
-addpath(genpath(fullfile('~/Desktop/CFTR','input')))	% location of your input folder
-inputFileName = 'inputCatoNPPBMutantsQuench.m'; % name of you input file as string
+addpath(genpath(fullfile('~/Desktop/CFTR','input'))) % location of your input folder
+inputFileName = 'inputCatoNPPBForskolin_exp14.m';						% name of you input file as string
+
 [inputFolder,saveWorkspaceHere] = inputFileCheckAndRun_quench(inputFileName);
 
 %% STRUCTURING DATA

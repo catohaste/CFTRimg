@@ -6,7 +6,7 @@ close all
 addpath(genpath('functions'))
 
 addpath(genpath(fullfile('example','input'))) % location of your input folder
-inputFileName = 'example_local.m';						% name of you input file as string
+inputFileName = 'inputCatoNPPBForskolinLocal28.m';						% name of you input file as string
 [inputFolder,saveWorkspaceHere] = inputFileCheckAndRun_local(inputFileName);
 
 %% STRUCTURING DATA
