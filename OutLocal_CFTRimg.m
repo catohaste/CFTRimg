@@ -51,7 +51,7 @@ vertcat			 (titles,results)
 
 summaryTable = cell2table(vertcat(titles,results));
 
-writetable(summaryTable,'~/Desktop/summary.csv')
+% writetable(summaryTable,'~/Desktop/summary.csv')
 
 
 %% STATISTICS (each cell as sample)
@@ -151,6 +151,7 @@ vertcat(titles,results)
 fprintf('p value for comparison = %.5f\n',p)
 
 %% QQ-PLOTS & FREQUENCY DISTRIBUTIONS (each cell as sample)
+conditionN = length(resultsLocal);
 figure;
 for b  = 1:length(resultsLocal)
 	MembraneDensity = resultsLocal(b).logMemDens;
