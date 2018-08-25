@@ -23,9 +23,9 @@ shadedErrorBar(x,meanYelControl,errYelControl...
 	,'lineprops',{'.','color',colors(5,:),'linewidth',0.8});
 hold on;
 shadedErrorBar(x,meanYelTest(),errYelTest()...
-	,'lineprops',{'.','linewidth',0.8});
-p1 = plot(nan,nan,'-','color',colors(5,:),'linewidth',1);
-p2 = plot(nan,nan,'-', 'linewidth',1);
+	,'lineprops',{'.','color',colors(4,:),'linewidth',0.8});
+p1 = plot(nan,nan,'-','color',colors(5,:),'linewidth',3);
+p2 = plot(nan,nan,'-','color',colors(4,:), 'linewidth',3);
 % plot([0 0],[0 1.3],':k','markersize',1)
 % plot([40 40],[0 1.3],':k','markersize',1)
 % a1=annotation('textbox',[0.165 0.22 0.05 0.05],'string',sprintf('Iodide\naddition'),'fitboxtotext','on');
@@ -41,10 +41,10 @@ set(xlhand,'string','Time (s)','fontsize',18)
 ylhand = get(gca,'ylabel');
 set(ylhand,'string','F/F_{max}','fontsize',18)
 
-% legend([p1 p2],'DMSO','DMSO + Forskolin','location','northeast')
-% set(gca,'fontsize',10)
-% a1.FontSize = 10;
-% a2.FontSize = 10;
+% legend([p1 p2],sprintf('DMSO +\nForskolin 100nM'),sprintf('DMSO +\nForskolin 100nM +\nNPPB 10uM'),'location','northeast')
+% set(gca,'fontsize',20)
+% a1.FontSize = 20;
+% a2.FontSize = 20;
 
 end
 
