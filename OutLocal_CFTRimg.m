@@ -97,7 +97,7 @@ end
 [G,conditionGroups,expGroups]	=	findgroups(data_expN(:,1),data_expN(:,2));
 stats_meanMemDens	= splitapply(@mean,vertcat(data_expN{:,3}),G);
 meanMemDens	= splitapply(@mean,vertcat(data_expN{:,3}),G);
-meanMemDens = 10.^meanMemDens;
+% meanMemDens = 10.^meanMemDens;
 [condG,conditionNames] = findgroups(conditionGroups);
 [expG,expNames] = findgroups(expGroups);
 conditionN = length(conditionNames);

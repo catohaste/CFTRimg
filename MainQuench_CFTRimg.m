@@ -6,7 +6,7 @@ close all
 addpath(genpath('functions'))
 
 addpath(genpath(fullfile('~/Desktop/CFTR','input'))) % location of your input folder
-inputFileName = 'inputCatoNPPBForskolin_exp14.m';						% name of you input file as string
+inputFileName = 'inputCatoNPPBForskolin37Quench.m';						% name of you input file as string
 
 [inputFolder,saveWorkspaceHere] = inputFileCheckAndRun_quench(inputFileName);
 
